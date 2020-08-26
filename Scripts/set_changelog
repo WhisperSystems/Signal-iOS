@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env sh
 set -e
 
-function untracked() {
-    echo "Git repository has untracked files."
+untracked() {
+    echo 'Git repository has untracked files.' >&2
     exit 1
 }
 
@@ -10,15 +10,15 @@ git diff --quiet || untracked
 
 BASE_DIR=$(git rev-parse --show-toplevel)
 
-pushd $BASE_DIR
+cd "$BASE_DIR"
 
 # Open the editor for entering the changelog
-"${VISUAL:-"${EDITOR:-vi}"}" "fastlane/changelog.txt"
+"${VISUAL:-"${EDITOR:-vi}"}" 'fastlane/changelog.txt'
 
 # Query the current app version
-CURRENT_VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" Signal/Signal-Info.plist)
+CURRENT_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' Signal/Signal-Info.plist)
 
-popd
+cd -
 
 # Strip trailing 0, e.g. if our version 3.13.0 we want to use 3.13
 CURRENT_VERSION=${CURRENT_VERSION%.0}
