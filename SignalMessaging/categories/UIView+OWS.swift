@@ -42,16 +42,20 @@ public extension UINavigationController {
     func pushViewController(_ viewController: UIViewController,
                                    animated: Bool,
                                    completion: (() -> Void)?) {
-        CATransaction.begin()
+        // It seems that the completion block has to be set before CATransaction.begin().
+        // Otherwise, the completion block is invoked immediately, as soon as the transaction is committed.
         CATransaction.setCompletionBlock(completion)
+        CATransaction.begin()
         pushViewController(viewController, animated: animated)
         CATransaction.commit()
     }
 
     func popViewController(animated: Bool,
                                   completion: (() -> Void)?) {
-        CATransaction.begin()
+        // It seems that the completion block has to be set before CATransaction.begin().
+        // Otherwise, the completion block is invoked immediately, as soon as the transaction is committed.
         CATransaction.setCompletionBlock(completion)
+        CATransaction.begin()
         popViewController(animated: animated)
         CATransaction.commit()
     }
@@ -59,8 +63,10 @@ public extension UINavigationController {
     func popToViewController(_ viewController: UIViewController,
                                     animated: Bool,
                                     completion: (() -> Void)?) {
-        CATransaction.begin()
+        // It seems that the completion block has to be set before CATransaction.begin().
+        // Otherwise, the completion block is invoked immediately, as soon as the transaction is committed.
         CATransaction.setCompletionBlock(completion)
+        CATransaction.begin()
         self.popToViewController(viewController, animated: animated)
         CATransaction.commit()
     }
