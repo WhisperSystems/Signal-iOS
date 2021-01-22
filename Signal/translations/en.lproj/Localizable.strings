@@ -3898,6 +3898,9 @@
 /* No comment provided by engineer. */
 "RELAY_REGISTERED_ERROR_RECOVERY" = "The phone number you are trying to register has already been registered on another server, please unregister from there and try again.";
 
+/* Accessibility label for the 'x' button that removes a preview from a drafted message. */
+"REMOVE_PREVIEW" = "Remove preview";
+
 /* The title for the 'replace group admin' view. */
 "REPLACE_ADMIN_VIEW_TITLE" = "Choose New Admin";
 

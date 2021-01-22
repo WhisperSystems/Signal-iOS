@@ -157,6 +157,9 @@ public class MessageStrings: NSObject {
 
     @objc
     static public let viewOnceViewVideo = NSLocalizedString("PER_MESSAGE_EXPIRATION_VIEW_VIDEO", comment: "Label for view-once messages indicating that user can tap to view the message's contents.")
+
+    @objc
+    static public let removePreviewButtonLabel = NSLocalizedString("REMOVE_PREVIEW", comment: "Accessibility label for a button that removes the preview from a drafted message.")
 }
 
 @objc

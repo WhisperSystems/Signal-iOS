@@ -984,6 +984,7 @@ public class LinkPreviewView: UIStackView {
         let cancelImage = UIImage(named: "compose-cancel")?.withRenderingMode(.alwaysTemplate)
         let cancelButton = UIButton(type: .custom)
         cancelButton.setImage(cancelImage, for: .normal)
+        cancelButton.accessibilityLabel = MessageStrings.removePreviewButtonLabel
         cancelButton.addTarget(self, action: #selector(didTapCancel(sender:)), for: .touchUpInside)
         self.cancelButton = cancelButton
         cancelButton.tintColor = Theme.secondaryTextAndIconColor
