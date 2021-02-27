@@ -4396,6 +4396,12 @@
 /* Title for switch to toggle preference between contact and profile avatars */
 "SETTINGS_APPEARANCE_AVATAR_PREFERENCE_LABEL" = "Use system contact photos";
 
+/* Footer for group chat avatar section in appearance settings */
+"SETTINGS_APPEARANCE_GROUP_AVATARS_FOOTER" = "Should senders avatars be hidden in group chats";
+
+/* Title for switch to toggle preference of whether to show profile pictures in group chat */
+"SETTINGS_APPEARANCE_GROUP_AVATARS_PREFERENCE_LABEL" = "Hide Avaters in Group Chat";
+
 /* The title for the theme section in the appearance settings. */
 "SETTINGS_APPEARANCE_THEME_TITLE" = "Theme";
 

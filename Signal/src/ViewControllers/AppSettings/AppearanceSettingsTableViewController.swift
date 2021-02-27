@@ -77,6 +77,27 @@ class AppearanceSettingsTableViewController: OWSTableViewController {
         )
 
         contents.addSection(contactSection)
+        
+        let avaterSection = OWSTableSection()
+        avaterSection.customHeaderHeight = 14
+        avaterSection.footerTitle = NSLocalizedString(
+            "SETTINGS_APPEARANCE_GROUP_AVATARS_FOOTER",
+            comment: "Footer for group chat avatar section in appearance settings")
+
+        avaterSection.add(
+            OWSTableItem.switch(
+                withText: NSLocalizedString(
+                    "SETTINGS_APPEARANCE_GROUP_AVATARS_PREFERENCE_LABEL",
+                    comment: "Title for switch to toggle preference of whether to show profile pictures in group chat"),
+                isOn: {
+                    SDSDatabaseStorage.shared.read { SSKPreferences.hideGroupChatAvatars(transaction: $0) }
+                },
+                target: self,
+                selector: #selector(didToggleGroupAvatarsPreference(_:))
+            )
+        )
+
+        contents.addSection(avaterSection)
 
         // TODO iOS 13 – maybe expose the preferred language settings here to match android
         // It not longer seems to exist in iOS 13.1 so not sure if Apple got rid of it
@@ -120,5 +141,15 @@ class AppearanceSettingsTableViewController: OWSTableViewController {
         SDSDatabaseStorage.shared.asyncWrite { writeTx in
             SSKPreferences.setPreferContactAvatars(sender.isOn, transaction: writeTx)
         }
+
     }
+    
+    @objc func didToggleGroupAvatarsPreference(_ sender: UISwitch) {
+        Logger.info("Group Avatar preference toggled: \(sender.isOn)")
+        SDSDatabaseStorage.shared.asyncWrite { writeTx in
+            SSKPreferences.setHideGroupChatAvatars(sender.isOn, transaction: writeTx)
+        }
+    }
+    
+    
 }

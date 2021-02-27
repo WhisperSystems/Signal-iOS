@@ -2373,6 +2373,11 @@ public struct StorageServiceProtoAccountRecord: Codable, CustomDebugStringConver
         if hasPreferContactAvatars {
             builder.setPreferContactAvatars(preferContactAvatars)
         }
+
+        if hasHideGroupChatAvatars {
+            builder.setHideGroupChatAvatars(hideGroupChatAvatars)
+        }
+
         if let _value = unknownFields {
             builder.setUnknownFields(_value)
         }
@@ -2473,6 +2478,10 @@ public struct StorageServiceProtoAccountRecord: Codable, CustomDebugStringConver
             proto.preferContactAvatars = valueParam
         }
 
+        public mutating func setHideGroupChatAvatars(_ valueParam: Bool) {
+            proto.hideGroupChatAvatars = valueParam
+        }
+        
         public mutating func setUnknownFields(_ unknownFields: SwiftProtobuf.UnknownStorage) {
             proto.unknownFields = unknownFields
         }
@@ -2608,6 +2617,13 @@ public struct StorageServiceProtoAccountRecord: Codable, CustomDebugStringConver
         return proto.preferContactAvatars
     }
     public var hasPreferContactAvatars: Bool {
+        return true
+    }
+
+    public var hideGroupChatAvatars: Bool {
+        return proto.hideGroupChatAvatars
+    }
+    public var hasHideGroupChatAvatars: Bool {
         return true
     }
 

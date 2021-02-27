@@ -40,9 +40,10 @@ public class CVComponentMessage: CVComponentBase, CVRootComponent {
 
     private var senderAvatar: CVComponentState.SenderAvatar?
     private var hasSenderAvatarLayout: Bool {
+
         // Return true if space for a sender avatar appears in the layout.
         // Avatar itself might not appear due to de-duplication.
-        isIncoming && isGroupThread && senderAvatar != nil
+        isIncoming && isGroupThread && senderAvatar != nil && !shouldHideSenderAvaters
     }
     private var hasSenderAvatar: Bool {
         // Return true if a sender avatar appears.
@@ -75,6 +76,8 @@ public class CVComponentMessage: CVComponentBase, CVRootComponent {
     private var swipeToReplyReference: CVSwipeToReplyState.Reference?
 
     private var hasSendFailureBadge = false
+    
+    private var shouldHideSenderAvaters = false;
 
     override init(itemModel: CVItemModel) {
         super.init(itemModel: itemModel)
@@ -194,7 +197,12 @@ public class CVComponentMessage: CVComponentBase, CVRootComponent {
     }
 
     private func buildComponentStates() {
-
+        if isGroupThread {
+            SDSDatabaseStorage.shared.asyncRead { readTx in
+                self.shouldHideSenderAvaters = SSKPreferences.hideGroupChatAvatars(transaction: readTx)
+            }
+        }
+        
         hasSendFailureBadge = componentState.sendFailureBadge != nil
 
         if let senderName = itemViewState.senderName {

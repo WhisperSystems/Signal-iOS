@@ -650,7 +650,10 @@ extension StorageServiceProtoAccountRecord {
 
         let preferContactAvatars = SSKPreferences.preferContactAvatars(transaction: transaction)
         builder.setPreferContactAvatars(preferContactAvatars)
-
+        
+        let hideGroupChatAvatars = SSKPreferences.hideGroupChatAvatars(transaction: transaction)
+        builder.setHideGroupChatAvatars(preferContactAvatars)
+        
         if let unknownFields = unknownFields {
             builder.setUnknownFields(unknownFields)
         }
@@ -784,7 +787,17 @@ extension StorageServiceProtoAccountRecord {
                 updateStorageService: false,
                 transaction: transaction)
         }
+        
+        let localHideGroupChatAvatars = SSKPreferences.hideGroupChatAvatars(transaction: transaction)
+        if hideGroupChatAvatars != localHideGroupChatAvatars {
+            SSKPreferences.setHideGroupChatAvatars(
+                hideGroupChatAvatars,
+                updateStorageService: false,
+                transaction: transaction)
+        }
 
+        
+        
         return mergeState
     }
 }

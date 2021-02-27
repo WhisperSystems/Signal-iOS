@@ -208,6 +208,39 @@ public class SSKPreferences: NSObject {
             NotificationCenter.default.postNotificationNameAsync(Self.preferContactAvatarsPreferenceDidChange, object: nil)
         }
     }
+    
+    // MARK: - Group chat avatars preference
+
+    @objc
+    public static let hideGroupChatAvatarsPreferenceDidChange = Notification.Name("HideGroupChatAvatarsPreferenceDidChange")
+    private static let hideGroupChatAvatarsKey = "hideGroupChatAvatarsKey"
+    private static var hideGroupChatAvatarsCached: Bool?
+
+    @objc
+    public static func hideGroupChatAvatars(transaction: SDSAnyReadTransaction) -> Bool {
+        if let value = hideGroupChatAvatarsCached { return value }
+        let value = store.getBool(hideGroupChatAvatarsKey, defaultValue: false, transaction: transaction)
+        hideGroupChatAvatarsCached = value
+        return value
+    }
+
+    @objc
+    public static func setHideGroupChatAvatars(
+        _ value: Bool,
+        updateStorageService: Bool = true,
+        transaction: SDSAnyWriteTransaction) {
+
+        let oldValue = store.getBool(hideGroupChatAvatarsKey, transaction: transaction)
+        store.setBool(value, key: hideGroupChatAvatarsKey, transaction: transaction)
+        hideGroupChatAvatarsCached = value
+
+        if oldValue != value {
+            if updateStorageService {
+                SSKEnvironment.shared.storageServiceManager.recordPendingLocalAccountUpdates()
+            }
+            NotificationCenter.default.postNotificationNameAsync(Self.hideGroupChatAvatarsPreferenceDidChange, object: nil)
+        }
+    }
 
     // MARK: -
 

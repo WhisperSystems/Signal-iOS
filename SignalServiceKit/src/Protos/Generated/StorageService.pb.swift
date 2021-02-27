@@ -404,6 +404,8 @@ struct StorageServiceProtos_AccountRecord {
   var pinnedConversations: [StorageServiceProtos_AccountRecord.PinnedConversation] = []
 
   var preferContactAvatars: Bool = false
+  
+  var hideGroupChatAvatars: Bool = false
 
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
@@ -1077,7 +1079,8 @@ extension StorageServiceProtos_AccountRecord: SwiftProtobuf.Message, SwiftProtob
     12: .same(proto: "phoneNumberSharingMode"),
     13: .same(proto: "notDiscoverableByPhoneNumber"),
     14: .same(proto: "pinnedConversations"),
-    15: .same(proto: "preferContactAvatars")
+    15: .same(proto: "preferContactAvatars"),
+    16: .same(proto: "hideGroupChatAvatars")
   ]
 
   mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1098,6 +1101,7 @@ extension StorageServiceProtos_AccountRecord: SwiftProtobuf.Message, SwiftProtob
       case 13: try decoder.decodeSingularBoolField(value: &self.notDiscoverableByPhoneNumber)
       case 14: try decoder.decodeRepeatedMessageField(value: &self.pinnedConversations)
       case 15: try decoder.decodeSingularBoolField(value: &self.preferContactAvatars)
+      case 16: try decoder.decodeSingularBoolField(value: &self.hideGroupChatAvatars)
       default: break
       }
     }
@@ -1149,6 +1153,9 @@ extension StorageServiceProtos_AccountRecord: SwiftProtobuf.Message, SwiftProtob
     if self.preferContactAvatars != false {
       try visitor.visitSingularBoolField(value: self.preferContactAvatars, fieldNumber: 15)
     }
+    if self.hideGroupChatAvatars != false {
+      try visitor.visitSingularBoolField(value: self.hideGroupChatAvatars, fieldNumber: 16)
+    }
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1168,6 +1175,7 @@ extension StorageServiceProtos_AccountRecord: SwiftProtobuf.Message, SwiftProtob
     if lhs.notDiscoverableByPhoneNumber != rhs.notDiscoverableByPhoneNumber {return false}
     if lhs.pinnedConversations != rhs.pinnedConversations {return false}
     if lhs.preferContactAvatars != rhs.preferContactAvatars {return false}
+    if lhs.hideGroupChatAvatars != rhs.hideGroupChatAvatars {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
