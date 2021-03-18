@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import sys
 import os
 import re
@@ -11,19 +12,19 @@ def fail(message):
     file_name = __file__
     current_line_no = inspect.stack()[1][2]
     current_function_name = inspect.stack()[1][3]
-    print 'Failure in:', file_name, current_line_no, current_function_name
-    print message
+    print('Failure in:', file_name, current_line_no, current_function_name)
+    print(message)
     sys.exit(1)
 
 
 def execute_command(command):
     try:
-        print ' '.join(command)
+        print(' '.join(command))
         output = subprocess.check_output(command)
         if output:
-            print output
+            print(output)
     except subprocess.CalledProcessError as e:
-        print e.output
+        print(e.output)
         sys.exit(1)
 
 
@@ -108,7 +109,7 @@ def get_versions(plist_file_path):
     
     # e.g. "2.13.0.13"
     old_build_version = file_match.group(1)
-    print 'old_build_version:', old_build_version
+    print('old_build_version:', old_build_version)
     
     if not is_valid_build_version(old_build_version):
         fail('Invalid build version: %s' % old_build_version)
@@ -120,7 +121,7 @@ def get_versions(plist_file_path):
     
     # e.g. "13"
     old_build_number = build_number_match.group(1)
-    print 'old_build_number:', old_build_number
+    print('old_build_number:', old_build_number)
     
     release_number_regex = re.compile(r'^(.+)\.\d+$')
     release_number_match = release_number_regex.search(old_build_version)
@@ -129,7 +130,7 @@ def get_versions(plist_file_path):
     
     # e.g. "2.13.0"
     old_release_version = release_number_match.group(1)
-    print 'old_release_version:', old_release_version
+    print('old_release_version:', old_release_version)
     
     # Given "2.13.0.13", this should return "2.13.0" and "13" as strings.
     return old_release_version, old_build_number
@@ -161,11 +162,11 @@ if __name__ == '__main__':
         
     output = subprocess.check_output(['git', 'status', '--porcelain'])
     if len(output.strip()) > 0:
-        print output
+        print(output)
         fail('Git repository has untracked files.')
     output = subprocess.check_output(['git', 'diff', '--shortstat'])
     if len(output.strip()) > 0:
-        print output
+        print(output)
         fail('Git repository has untracked files.')
     
     # Ensure .plist is in xml format, not binary.
@@ -186,13 +187,13 @@ if __name__ == '__main__':
         new_build_version = new_release_version + ".0"
     else:
         new_build_number = str(1 + int(old_build_number))
-        print 'new_build_number:', new_build_number
+        print('new_build_number:', new_build_number)
     
         new_release_version = old_release_version
         new_build_version = old_release_version + "." + new_build_number
 
-    print 'new_release_version:', new_release_version
-    print 'new_build_version:', new_build_version
+    print('new_release_version:', new_release_version)
+    print('new_build_version:', new_build_version)
 
     set_versions(main_plist_path, new_release_version, new_build_version)
     

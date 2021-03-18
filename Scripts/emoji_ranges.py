@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import sys
 import os
 import re
@@ -7,7 +8,7 @@ import subprocess
 import io
 
 def fail(message):
-    print message
+    print(message)
     sys.exit(1)
 
 # For simplicity and compactness, we pre-define the 
@@ -29,7 +30,7 @@ if __name__ == '__main__':
     src_filename = "emoji-data.txt"
     src_dir_path = os.path.dirname(__file__)
     src_file_path = os.path.join(src_dir_path, src_filename)
-    print 'src_file_path', src_file_path
+    print('src_file_path', src_file_path)
     if not os.path.exists(src_file_path):
         fail("Could not find input file")
     
@@ -43,16 +44,16 @@ if __name__ == '__main__':
             line = line[:line.index('#')].strip()
         if ';' not in line:
             continue
-        print 'line:', line
+        print('line:', line)
         range_text = line[:line.index(';')]
-        print '\t:', range_text
+        print('\t:', range_text)
         if '..' in range_text:
             range_start_hex_string, range_end_hex_string = range_text.split('..')
         else:
             range_start_hex_string = range_end_hex_string = range_text.strip()
         range_start = int(range_start_hex_string.strip(), 16)
         range_end = int(range_end_hex_string.strip(), 16)
-        print '\t', range_start, range_end
+        print('\t', range_start, range_end)
         
         raw_ranges.append((range_start, range_end,))
         
@@ -70,19 +71,19 @@ if __name__ == '__main__':
             if range_start >= last_range_start and range_start <= last_range_end + 1:
             # if last_range_end + 1 == range_start:
                 new_ranges = new_ranges[:-1]
-                print 'merging', last_range_start, last_range_end, 'and', range_start, range_end
+                print('merging', last_range_start, last_range_end, 'and', range_start, range_end)
                 new_ranges.append((last_range_start, max(range_end, last_range_end),))
                 continue
 
         new_ranges.append((range_start, range_end,))
     
-    print
+    print()
     for range_start, range_end in new_ranges:
         # print '0x%X...0x%X, // %d Emotions' % (range_start, range_end, (1 + range_end - range_start), )
-        print 'EmojiRange(rangeStart:0x%X, rangeEnd:0x%X),' % (range_start, range_end, )
-    print 'new_ranges:', len(new_ranges)
-    print
-    print 'Copy and paste the code above into DisplayableText.swift'
-    print 
+        print('EmojiRange(rangeStart:0x%X, rangeEnd:0x%X),' % (range_start, range_end, ))
+    print('new_ranges:', len(new_ranges))
+    print()
+    print('Copy and paste the code above into DisplayableText.swift')
+    print() 
         
         

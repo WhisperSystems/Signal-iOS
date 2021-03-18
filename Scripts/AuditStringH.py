@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import subprocess 
@@ -80,12 +81,12 @@ def process_if_appropriate(file_path):
             continue
         if not has_match:
             has_match = True
-            print 'file_path', file_path, 'file_ext', file_ext
+            print('file_path', file_path, 'file_ext', file_ext)
         for match in matches:
             # print 'match', match, type(match)
-            print '\t', 'match:', match.group(0)
+            print('\t', 'match:', match.group(0))
     if has_match:
-        print
+        print()
     
     
 if __name__ == "__main__":

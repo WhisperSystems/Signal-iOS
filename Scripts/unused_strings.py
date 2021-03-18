@@ -6,6 +6,7 @@ author: corbett
 usage: ./unused_strings.py Localizable.strings source_dir
 eg:    ./unused_strings.py ../Signal/translations/en.lproj/Localizable.strings ../Signal/src
 """
+from __future__ import print_function
 import sys
 import os
 import re
@@ -41,5 +42,5 @@ if __name__ == '__main__':
 	for item in open(strings_file).readlines():
 		grep_for = item.strip().split(' = ')[0].replace('"','')
 		if rgrep_match(src_dir_name, grep_for):
-			print item.strip()
+			print(item.strip())
 

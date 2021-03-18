@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import subprocess
@@ -256,7 +257,7 @@ def sort_matching_blocks(sort_name, filepath, filename, file_extension, text, ma
             break
 
     if text != processed:
-        print sort_name, filepath
+        print(sort_name, filepath)
     return processed
 
 
@@ -320,12 +321,12 @@ def process(filepath):
         env_copy["SCRIPT_INPUT_FILE_COUNT"] = "1"
         env_copy["SCRIPT_INPUT_FILE_0"] = '%s' % ( short_filepath, )
         lint_output = subprocess.check_output(['swiftlint', 'autocorrect', '--use-script-input-files'], env=env_copy)
-        print lint_output
+        print(lint_output)
         try:
             lint_output = subprocess.check_output(['swiftlint', 'lint', '--use-script-input-files'], env=env_copy)
-        except subprocess.CalledProcessError, e:
+        except subprocess.CalledProcessError as e:
             lint_output = e.output
-        print lint_output
+        print(lint_output)
 
     with open(filepath, 'rt') as f:
         text = f.read()
@@ -353,7 +354,7 @@ def process(filepath):
     if original_text == text:
         return
 
-    print 'Updating:', short_filepath
+    print('Updating:', short_filepath)
 
     with open(filepath, 'wt') as f:
         f.write(text)
@@ -415,7 +416,7 @@ def check_diff_for_keywords():
     command_line = 'git diff --staged | grep --color=always -C 3 -E "%s"' % matching_expression
     try:
         output = subprocess.check_output(command_line, shell=True)
-    except subprocess.CalledProcessError, e:
+    except subprocess.CalledProcessError as e:
         # > man grep
         #  EXIT STATUS
         #  The grep utility exits with one of the following values:
@@ -486,8 +487,8 @@ if __name__ == "__main__":
             filepath = os.path.abspath(os.path.join(git_repo_path, filepath))
             process_if_appropriate(filepath)
 
-    print 'git clang-format...'
+    print('git clang-format...')
     # we don't want to format .proto files, so we specify every other supported extension
-    print commands.getoutput('git clang-format --extensions "c,h,m,mm,cc,cp,cpp,c++,cxx,hh,hxx,cu,java,js,ts,cs" --commit %s' % clang_format_commit)
+    print(commands.getoutput('git clang-format --extensions "c,h,m,mm,cc,cp,cpp,c++,cxx,hh,hxx,cu,java,js,ts,cs" --commit %s' % clang_format_commit))
 
     check_diff_for_keywords()

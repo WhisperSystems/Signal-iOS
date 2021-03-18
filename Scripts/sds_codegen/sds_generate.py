@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import subprocess
@@ -92,7 +93,7 @@ class ParsedClass:
 
             # TODO: We should handle all properties?
             if property.should_ignore_property():
-                print 'Ignoring property:', property.name
+                print('Ignoring property:', property.name)
                 continue
 
             self.property_map[property.name] = property
@@ -127,13 +128,13 @@ class ParsedClass:
                 if duplicate_property is not None:
                     # print '\t', 'duplicate', property.name
                     if property.swift_type_safe() != duplicate_property.swift_type_safe():
-                        print 'property:', property.class_name, property.name, property.swift_type_safe(), property.is_optional
-                        print 'duplicate_property:', duplicate_property.class_name, duplicate_property.name, duplicate_property.swift_type_safe(), duplicate_property.is_optional
+                        print('property:', property.class_name, property.name, property.swift_type_safe(), property.is_optional)
+                        print('duplicate_property:', duplicate_property.class_name, duplicate_property.name, duplicate_property.swift_type_safe(), duplicate_property.is_optional)
                         fail("Duplicate property doesn't match:", property.name)
                     elif property.is_optional != duplicate_property.is_optional:
                         if property.name in root_property_names:
-                            print 'property:', property.class_name, property.name, property.swift_type_safe(), property.is_optional
-                            print 'duplicate_property:', duplicate_property.class_name, duplicate_property.name, duplicate_property.swift_type_safe(), duplicate_property.is_optional
+                            print('property:', property.class_name, property.name, property.swift_type_safe(), property.is_optional)
+                            print('duplicate_property:', duplicate_property.class_name, duplicate_property.name, duplicate_property.swift_type_safe(), duplicate_property.is_optional)
                             fail("Duplicate property doesn't match:", property.name)
 
                         # If one subclass property is optional and the other isn't, we should
@@ -205,23 +206,23 @@ class ParsedClass:
 
     def should_generate_extensions(self):
        if self.name in (OLD_BASE_MODEL_CLASS_NAME, NEW_BASE_MODEL_CLASS_NAME, ):
-           print 'Ignoring class (1):', self.name
+           print('Ignoring class (1):', self.name)
            return False
        if should_ignore_class(self):
-           print 'Ignoring class (2):', self.name
+           print('Ignoring class (2):', self.name)
            return False
 
        if not self.is_sds_model():
            # Only write serialization extensions for SDS models.
-           print 'Ignoring class (3):', self.name
+           print('Ignoring class (3):', self.name)
            return False
 
         # The migration should not be persisted in the data store.
        if self.name in ('OWSDatabaseMigration', 'YDBDatabaseMigration', 'OWSResaveCollectionDBMigration', ):
-           print 'Ignoring class (4):', self.name
+           print('Ignoring class (4):', self.name)
            return False
        if self.super_class_name in ('OWSDatabaseMigration', 'YDBDatabaseMigration', 'OWSResaveCollectionDBMigration', ):
-           print 'Ignoring class (5):', self.name
+           print('Ignoring class (5):', self.name)
            return False
 
        return True
@@ -881,26 +882,26 @@ def properties_and_inherited_properties(clazz):
 
 
 def generate_swift_extensions_for_model(clazz):
-    print '\t', 'processing', clazz.__dict__
+    print('\t', 'processing', clazz.__dict__)
 
     if not clazz.should_generate_extensions():
         return
 
     has_sds_superclass = clazz.has_sds_superclass()
 
-    print '\t', '\t', 'clazz.name', clazz.name, type(clazz.name)
-    print '\t', '\t', 'clazz.super_class_name', clazz.super_class_name
-    print '\t', '\t', 'filepath', clazz.filepath
-    print '\t', '\t', 'table_superclass', clazz.table_superclass().name
-    print '\t', '\t', 'has_sds_superclass', has_sds_superclass
+    print('\t', '\t', 'clazz.name', clazz.name, type(clazz.name))
+    print('\t', '\t', 'clazz.super_class_name', clazz.super_class_name)
+    print('\t', '\t', 'filepath', clazz.filepath)
+    print('\t', '\t', 'table_superclass', clazz.table_superclass().name)
+    print('\t', '\t', 'has_sds_superclass', has_sds_superclass)
 
     swift_filename = os.path.basename(clazz.filepath)
     swift_filename = swift_filename[:swift_filename.find('.')] + '+SDS.swift'
     swift_filepath = os.path.join(os.path.dirname(clazz.filepath), swift_filename)
-    print '\t', '\t', 'swift_filepath', swift_filepath
+    print('\t', '\t', 'swift_filepath', swift_filepath)
 
     record_type = get_record_type(clazz)
-    print '\t', '\t', 'record_type', record_type
+    print('\t', '\t', 'record_type', record_type)
 
     # TODO: We'll need to import SignalServiceKit for non-SSK models.
 
@@ -2033,7 +2034,7 @@ public extension %(model_name)s {
 
 
     # print 'swift_body', swift_body
-    print 'Writing:', swift_filepath
+    print('Writing:', swift_filepath)
 
     swift_body = sds_common.clean_up_generated_swift(swift_body)
 
@@ -2044,7 +2045,7 @@ public extension %(model_name)s {
 
 
 def process_class_map(class_map):
-    print 'processing', class_map
+    print('processing', class_map)
     for clazz in class_map.values():
         generate_swift_extensions_for_model(clazz)
 
@@ -2056,7 +2057,7 @@ record_type_map = {}
 # It's critical that our "record type" values are consistent, even if we add/remove/rename model classes.
 # Therefore we persist the mapping of known classes in a JSON file that is under source control.
 def update_record_type_map(record_type_swift_path, record_type_json_path):
-    print 'update_record_type_map'
+    print('update_record_type_map')
 
     record_type_map_filepath = record_type_json_path
 
@@ -2162,7 +2163,7 @@ enum_type_map = {}
 
 def objc_type_for_enum(enum_name):
     if enum_name not in enum_type_map:
-        print 'enum_type_map', enum_type_map
+        print('enum_type_map', enum_type_map)
         fail('Enum has unknown type:', enum_name)
     enum_type = enum_type_map[enum_name]
     return enum_type
@@ -2215,14 +2216,14 @@ def try_to_parse_file(file_path):
     _, file_extension = os.path.splitext(filename)
     if filename.endswith(sds_common.SDS_JSON_FILE_EXTENSION):
         # print 'filename:', filename
-        print '\t', 'found', file_path
+        print('\t', 'found', file_path)
         return parse_sds_json(file_path)
     else:
         return {}
 
 
 def find_sds_intermediary_files_in_path(path):
-    print 'find_sds_intermediary_files_in_path', path
+    print('find_sds_intermediary_files_in_path', path)
     class_map = {}
     if os.path.isfile(path):
         class_map.update(try_to_parse_file(path))
@@ -2265,7 +2266,7 @@ def is_swift_class_name(swift_type):
 configuration_json = {}
 
 def parse_config_json(config_json_path):
-    print 'config_json_path', config_json_path
+    print('config_json_path', config_json_path)
 
     with open(config_json_path, 'rt') as f:
         json_str = f.read()
@@ -2281,12 +2282,12 @@ def parse_config_json(config_json_path):
 def swift_type_for_nsnumber(property):
     nsnumber_types = configuration_json.get('nsnumber_types')
     if nsnumber_types is None:
-        print 'Suggestion: update: %s' % ( str(global_args.config_json_path), )
+        print('Suggestion: update: %s' % ( str(global_args.config_json_path), ))
         fail('Configuration JSON is missing mapping for properties of type NSNumber.')
     key = property.class_name + '.' + property.name
     swift_type = nsnumber_types.get(key)
     if swift_type is None:
-        print 'Suggestion: update: %s' % ( str(global_args.config_json_path), )
+        print('Suggestion: update: %s' % ( str(global_args.config_json_path), ))
         fail('Configuration JSON is missing mapping for properties of type NSNumber:', key)
     return swift_type
 
@@ -2373,7 +2374,7 @@ def was_property_renamed_for_property(property):
 property_order_json = {}
 
 def parse_property_order_json(property_order_json_path):
-    print 'property_order_json_path', property_order_json_path
+    print('property_order_json_path', property_order_json_path)
 
     with open(property_order_json_path, 'rt') as f:
         json_str = f.read()
@@ -2425,12 +2426,12 @@ if __name__ == "__main__":
     property_order_json_path = os.path.abspath(args.property_order_json_path)
 
     # We control the code generation process using a JSON config file.
-    print
-    print 'Parsing Config'
+    print()
+    print('Parsing Config')
     parse_config_json(config_json_path)
 
-    print
-    print 'Parsing Config'
+    print()
+    print('Parsing Config')
     parse_property_order_json(property_order_json_path)
 
     # The code generation needs to understand the class hierarchy so that
@@ -2440,19 +2441,19 @@ if __name__ == "__main__":
     #   the model class hierarchies.
     # * Generate deserialization methods that handle all subclasses.
     # * etc.
-    print
-    print 'Parsing Global Class Map'
+    print()
+    print('Parsing Global Class Map')
     global_class_map.update(find_sds_intermediary_files_in_path(search_path))
-    print 'global_class_map', global_class_map
+    print('global_class_map', global_class_map)
 
     update_subclass_map()
 
-    print
-    print 'Parsing Record Type Map'
+    print()
+    print('Parsing Record Type Map')
     update_record_type_map(record_type_swift_path, record_type_json_path)
 
-    print
-    print 'Processing'
+    print()
+    print('Processing')
     process_class_map(find_sds_intermediary_files_in_path(src_path))
 
     # Persist updated property order

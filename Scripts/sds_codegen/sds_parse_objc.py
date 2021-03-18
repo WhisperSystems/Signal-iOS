@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import subprocess
@@ -115,8 +116,8 @@ class ParsedClass:
                 if protocol_name.startswith('NS') or protocol_name.startswith('AV') or protocol_name.startswith('UI') or protocol_name.startswith('MF') or protocol_name.startswith('UN') or protocol_name.startswith('CN'):
                     # Ignore built in protocols.
                     continue
-                print 'clazz:', self.name
-                print 'file_path:', file_path
+                print('clazz:', self.name)
+                print('file_path:', file_path)
                 fail('Missing protocol:', protocol_name)
 
             result.append(protocol)
@@ -169,12 +170,12 @@ def split_objc_ast_prefix(line):
 
 def process_objc_ast(namespace, file_path, raw_ast):
     m_filename = os.path.basename(file_path)
-    print 'm_filename:', m_filename
+    print('m_filename:', m_filename)
     file_base, file_extension = os.path.splitext(m_filename)
     if file_extension != '.m':
         fail('Bad file extension:', file_extension)
     h_filename = file_base + '.h'
-    print 'h_filename:', h_filename
+    print('h_filename:', h_filename)
 
     # TODO: Remove
     lines = raw_ast.split('\n')
@@ -227,12 +228,12 @@ process_objc_enum_declaration_regex = re.compile(r"^.+? ([^ ]+) '([^']+)':'([^']
 enum_type_map = {}
 
 def process_objc_enum_declaration(namespace, file_path, lines, prefix, remainder):
-    print '\t', 'enum_declaration', remainder
+    print('\t', 'enum_declaration', remainder)
 
     match = process_objc_enum_declaration_regex.search(remainder)
     if match is None:
-        print 'file_path:', file_path
-        print 'Could not match line:', remainder
+        print('file_path:', file_path)
+        print('Could not match line:', remainder)
         return
     type1 = get_match_group(match, 1)
     type2 = get_match_group(match, 2)
@@ -241,23 +242,23 @@ def process_objc_enum_declaration(namespace, file_path, lines, prefix, remainder
     # print 'enum?', type1, type2, type3
 
     if type1.startswith('line:'):
-        print 'Ignoring invalid enum(1):', type1, type2, type3
+        print('Ignoring invalid enum(1):', type1, type2, type3)
         return
     if type1 in enum_type_map:
         return
     enum_type_map[type1] = type2
-    print 'enum_type_map', enum_type_map
+    print('enum_type_map', enum_type_map)
 
 
 # |-TypedefDecl 0x7f8d8fb44748 <line:12:1, line:22:3> col:3 referenced RPRecentCallType 'enum RPRecentCallType':'RPRecentCallType'
 process_objc_type_declaration_regex = re.compile(r"^.+?'([^']+)'(:'([^']+)')?$")
 
 def process_objc_type_declaration(namespace, file_path, lines, prefix, remainder):
-    print '\t', 'type_declaration', remainder
+    print('\t', 'type_declaration', remainder)
 
     match = process_objc_type_declaration_regex.search(remainder)
     if match is None:
-        print 'file_path:', file_path
+        print('file_path:', file_path)
         fail('Could not match line:', remainder)
     type1 = get_match_group(match, 1)
     type2 = get_match_group(match, 2)
@@ -272,10 +273,10 @@ def process_objc_type_declaration(namespace, file_path, lines, prefix, remainder
     # print 'type_declaration:', type1, type2, type3
 
     if type3.startswith('line:'):
-        print 'Ignoring invalid enum(2):', type1, type2, type3
+        print('Ignoring invalid enum(2):', type1, type2, type3)
         return
     if type3 not in enum_type_map:
-        print 'Enum has unknown type:', type3
+        print('Enum has unknown type:', type3)
         enum_type = 'NSUInteger'
     else:
         enum_type = enum_type_map[type3]
@@ -346,7 +347,7 @@ def process_objc_implementation(namespace, file_path, lines, decl_prefix, decl_r
         clazz.is_implemented = True
 
 def process_objc_protocol_decl(namespace, file_path, lines, decl_prefix, decl_remainder):
-    print '\t', 'protocol decl', decl_remainder
+    print('\t', 'protocol decl', decl_remainder)
     clazz = process_objc_class(namespace, file_path, lines, decl_prefix, decl_remainder)
     if clazz is not None:
         clazz.is_implemented = True
@@ -459,7 +460,7 @@ def process_objc_property_impl(clazz, prefix, file_path, line, remainder):
 
     match = process_objc_property_impl_regex.search(remainder)
     if match is None:
-        print 'file_path:', file_path
+        print('file_path:', file_path)
         fail('Could not match line:', line)
     property_name = match.group(1).strip()
     property = clazz.get_property(property_name)
@@ -471,15 +472,15 @@ def process_objc_property_impl(clazz, prefix, file_path, line, remainder):
             # to handle them.
             return
 
-        print 'file_path:', file_path
-        print 'line:', line
-        print '\t', 'clazz', clazz.name, clazz.counter
-        print '\t', 'property_name', property_name
+        print('file_path:', file_path)
+        print('line:', line)
+        print('\t', 'clazz', clazz.name, clazz.counter)
+        print('\t', 'property_name', property_name)
         for name in clazz.property_names():
-            print '\t\t', name
+            print('\t\t', name)
         fail("Can't find property:", property_name)
     else:
-        print 'property synthesized', line
+        print('property synthesized', line)
         property.is_synthesized = True
 
 
@@ -505,8 +506,8 @@ def process_objc_property(clazz, prefix, file_path, line, remainder):
 
     match = process_objc_property_regex.search(remainder)
     if match is None:
-        print 'file_path:', file_path
-        print 'remainder:', remainder
+        print('file_path:', file_path)
+        print('remainder:', remainder)
         fail('Could not match line:', line)
     property_name = match.group(1).strip()
     property_type_1 = get_match_group(match, 2)
@@ -531,7 +532,7 @@ def process_objc_property(clazz, prefix, file_path, line, remainder):
         property_type = property_type_1
     # property_type = property_type_1
 
-    print '\t', property_name, 'property_type', property_type, 'property_type1', property_type_1, 'property_type2', property_type_2, 'property_type', property_type
+    print('\t', property_name, 'property_type', property_type, 'property_type1', property_type_1, 'property_type2', property_type_2, 'property_type', property_type)
 
     property = clazz.get_property(property_name)
     if property is None:
@@ -547,8 +548,8 @@ def process_objc_property(clazz, prefix, file_path, line, remainder):
                 # CocoaLumberjack has nullability consistency issues.
                 # Ignore them.
                 return
-            print 'file_path:', file_path
-            print 'clazz:', clazz.name
+            print('file_path:', file_path)
+            print('clazz:', clazz.name)
             fail("Property is_optional don't match", property_name)
         if property.objc_type != property_type:
             # There's a common pattern of using a mutable private property
@@ -557,11 +558,11 @@ def process_objc_property(clazz, prefix, file_path, line, remainder):
             if property_type.startswith('NSMutable') and property.objc_type == 'NS' + property_type[len('NSMutable'):]:
                 property.objc_type = property_type
             else:
-                print 'file_path:', file_path
-                print 'remainder:', remainder
-                print 'property.objc_type:', property.objc_type
-                print 'property_type:', property_type
-                print 'property_name:', property_name
+                print('file_path:', file_path)
+                print('remainder:', remainder)
+                print('property.objc_type:', property.objc_type)
+                print('property_type:', property_type)
+                print('property_name:', property_name)
                 fail("Property types don't match", property.objc_type, property_type)
 
 
@@ -583,7 +584,7 @@ def emit_output(file_path, namespace):
 
         for property in clazz.all_properties():
             if not property.is_synthesized:
-                print '\t', 'Ignoring property:', property.name
+                print('\t', 'Ignoring property:', property.name)
                 continue
 
             property_dict = {
@@ -633,7 +634,7 @@ def find_header_include_paths(include_path):
         if has_header:
             result.append('-I' + dir_path)
         else:
-            print 'Ignoring:', dir_path
+            print('Ignoring:', dir_path)
 
     # Add root if necessary.
     add_dir_if_has_header(include_path)
@@ -708,15 +709,15 @@ def gather_module_headers(pods_dir_path):
 
 
 def get_pch_include(file_path):
-    print 'file_path', file_path
+    print('file_path', file_path)
     ssk_path = os.path.join(git_repo_path, 'SignalServiceKit') + os.sep
     sm_path = os.path.join(git_repo_path, 'SignalMessaging') + os.sep
     s_path = os.path.join(git_repo_path, 'Signal') + os.sep
     sae_path = os.path.join(git_repo_path, 'SignalShareExtension') + os.sep
-    print 'ssk_path', ssk_path
-    print 'sm_path', sm_path
-    print 's_path', s_path
-    print 'sae_path', sae_path
+    print('ssk_path', ssk_path)
+    print('sm_path', sm_path)
+    print('s_path', s_path)
+    print('sae_path', sae_path)
     if file_path.startswith(ssk_path):
         return os.path.join(git_repo_path, "Pods/Target Support Files/SignalServiceKit/SignalServiceKit-prefix.pch")
     elif file_path.startswith(sm_path):
@@ -778,16 +779,16 @@ def process_objc(file_path, swift_bridging_path, intermediates):
         # 'test4.txt'
     ]
     for part in command:
-        print '\t', part
+        print('\t', part)
     # command = ' '.join(command).strip()
     # print 'command', command
     # output = commands.getoutput(command)
 
     # command = ' '.join(command).strip()
-    print 'command', command
+    print('command', command)
     exit_code, output, error_output = ows_getoutput(command)
-    print 'exit_code:', exit_code
-    print 'error_output:', error_output
+    print('exit_code:', exit_code)
+    print('error_output:', error_output)
     # print 'output:', len(output)
 
     # exit(1)
@@ -797,10 +798,10 @@ def process_objc(file_path, swift_bridging_path, intermediates):
 
     if intermediates:
         intermediate_file_path = file_path + '.ast'
-        print 'Writing intermediate:', intermediate_file_path
+        print('Writing intermediate:', intermediate_file_path)
         with open(intermediate_file_path, 'wt') as f:
             f.write(raw_ast)
-    print 'raw_ast:', len(raw_ast)
+    print('raw_ast:', len(raw_ast))
 
     namespace = Namespace()
 
@@ -808,10 +809,10 @@ def process_objc(file_path, swift_bridging_path, intermediates):
 
     output = emit_output(file_path, namespace)
 
-    print 'output', output
+    print('output', output)
 
     parsed_file_path = file_path + sds_common.SDS_JSON_FILE_EXTENSION
-    print 'parsed_file_path', parsed_file_path
+    print('parsed_file_path', parsed_file_path)
     with open(parsed_file_path, 'wt') as f:
         f.write(output)
 
