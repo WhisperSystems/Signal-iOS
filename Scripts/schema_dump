@@ -2,18 +2,18 @@
 
 set -e
 
-BIN_NAME=$0
+BIN_NAME=${0##*/}
 
 function usage() {
-    echo ""
-    echo "Usage:"
-    echo "$BIN_NAME [passphrase] [path-to-database]"
-    echo ""
-    echo "    With no arguments, uses the currently booted siumlator. If not configured for external visibility, you'll be prompted for a password"
-    echo "    With one argument, uses the currently booted simulator with the provided passphrase. No quotes please, just a hex string."
-    echo "    With both arguments, uses the passphrase on the database at the provided path."
-    echo ""
-    echo "e.g. $BIN_NAME abcd0123cdef4567 /Home/Users/foo/Library/Simulator/blah/database/signal.sqlite"
+    echo "
+Usage:
+$BIN_NAME [passphrase] [path-to-database]
+
+    With no arguments, uses the currently booted siumlator. If not configured for external visibility, you'll be prompted for a password
+    With one argument, uses the currently booted simulator with the provided passphrase. No quotes please, just a hex string.
+    With both arguments, uses the passphrase on the database at the provided path.
+
+e.g. $BIN_NAME abcd0123cdef4567 /Home/Users/foo/Library/Simulator/blah/database/signal.sqlite"
 }
 
 if [[ $1 == '-h' || $1 == '--help' ]]
@@ -24,29 +24,29 @@ fi
 
 DB_KEY=$1
 DB_PATH=$2
-PATH_ARG=""
-KEY_ARG=""
+PATH_ARG=()
+KEY_ARG=()
 
 if [[ $DB_PATH ]]
 then
-  PATH_ARG="--path $DB_PATH"
+  PATH_ARG=(--path "$DB_PATH")
 fi
 if [[ $DB_KEY ]]
 then
-  KEY_ARG="--passphrase $DB_KEY"
+  KEY_ARG=(--passphrase "$DB_KEY")
 fi
 
 BASE_DIR=$(git rev-parse --show-toplevel)
-cd $BASE_DIR
+cd "$BASE_DIR"
 
 OUTPUT_FILE=SignalServiceKit/Resources/schema.sql
 
-Scripts/sqlclient --quiet $PATH_ARG $KEY_ARG -- .schema |   # Grab the schema
+Scripts/sqlclient --quiet "${PATH_ARG[@]}" "${KEY_ARG[@]}" -- .schema |   # Grab the schema
   grep -v -e grdb_migrations -e sqlite_sequence         |   # Filter out oneline tables we don't care about
   sed '1s/ok//'                                         |   # Filter out the "ok" message that sqlcipher prints for the passphrase PRAGMAs
   bundle exec anbt-sql-formatter > $OUTPUT_FILE             # Format it and write it to the file
 
-if [ ${PIPESTATUS[0]} -eq 0 ]; then
+if [ "${PIPESTATUS[0]}" -eq 0 ]; then
     echo "🌈 Successfully dumped schema to ${OUTPUT_FILE}"
 else
     cat << EOS

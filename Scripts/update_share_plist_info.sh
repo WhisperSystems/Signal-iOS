@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 set -e
 
@@ -6,7 +6,7 @@ set -e
 /usr/libexec/PlistBuddy -c "Delete BuildTimestamp" SignalShareExtension/Info.plist || true
 
 if [ "${CONFIGURATION}" = "App Store Release" ]; then
-    _build_timestamp=`date +%s`
+    _build_timestamp=$(date +%s)
     /usr/libexec/PlistBuddy -c "add :BuildTimestamp string '$_build_timestamp'" SignalShareExtension/Info.plist
 fi
 
