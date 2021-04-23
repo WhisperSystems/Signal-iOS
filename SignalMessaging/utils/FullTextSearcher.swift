@@ -444,13 +444,21 @@ public class FullTextSearcher: NSObject {
                                                             messageId: message.uniqueId,
                                                             messageDate: NSDate.ows_date(withMillisecondsSince1970: message.timestamp),
                                                             snippet: snippet)
-                guard messages[sortKey] == nil else { return }
+                guard messages[sortKey] == nil else {
+                    count -= 1
+                    return
+                }
                 messages[sortKey] = searchResult
             }
 
             func appendSignalAccount(_ signalAccount: SignalAccount) {
                 let searchResult = ContactSearchResult(signalAccount: signalAccount, transaction: transaction)
-                contacts.append(searchResult)
+
+                if contacts.filter({ $0 == searchResult }).count == 0 {
+                    contacts.append(searchResult)
+                } else {
+                    count -= 1
+                }
 
                 getMentionedMessages(signalAccount.recipientAddress)
                     .forEach { message in
@@ -474,6 +482,8 @@ public class FullTextSearcher: NSObject {
                     if contactThread.shouldThreadBeVisible {
                         existingConversationAddresses.insert(contactThread.contactAddress)
                         conversations.append(searchResult)
+                    } else {
+                        count -= 1
                     }
                 default:
                     owsFailDebug("unexpected thread: \(type(of: thread))")
@@ -484,8 +494,10 @@ public class FullTextSearcher: NSObject {
                 appendSignalAccount(signalAccount)
             } else if let signalRecipient = match as? SignalRecipient {
                 // Ignore unregistered recipients.
-                guard signalRecipient.devices.count > 0 else { return }
-
+                guard signalRecipient.devices.count > 0 else {
+                    count -= 1
+                    return
+                }
                 let signalAccount = SignalAccount(signalRecipient: signalRecipient, contact: nil, multipleAccountLabelText: nil)
                 appendSignalAccount(signalAccount)
             } else {
