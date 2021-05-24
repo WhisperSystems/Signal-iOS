@@ -4,13 +4,13 @@
 
 ### Localize User Facing Strings
 
-Use the NSLocalizedString macros to mark any user facing strings as
+Use the NSLocalizedString macros to mark any user-facing strings as
 localizable. See existing usages of this macro for examples.
 
 ### Extract Source Strings
 
 To extract the latest translatable strings and comments from our local source
-files into our english localization file:
+files into our English localization file:
 
     bin/auto-genstrings
 
@@ -19,7 +19,7 @@ At this point you should see your new strings, untranslated in only the English
 
 Edit Signal/translations/en.lproj/Localizable.strings to translate your strings.
 
-Commit these English translations with your work. Do not touch the non-english
+Commit these English translations with your work. Do not touch the non-English
 localizations. Those are updated as part of our release process by Signal
 Staff.
 
@@ -37,7 +37,7 @@ the same, but in Finnish the noun/verb are distinct.
     /* Button label to archive the current conversation */
     ARCHIVE_ACTION="Archive"
 
-#### Finish
+#### Finnish
 
     /* Tab button label which takes you to view all your archived conversations */
     ARCHIVE_HEADER="Arkisto"
@@ -55,12 +55,12 @@ little longer?
 Translations are solicited on Transifex[https://www.transifex.com/signalapp/signal-ios/]. We
 upload our source language (US English) to Transifex, where our
 translators can submit their translations. Before the app is released,
-we pull their latest work into the code base.
+we pull their latest work into the codebase.
 
 ## Fetch Translations
 
-Generally you want to fetch the latest translations whenever releasing. The
-exception being if you have recently changed lots of existing source strings 
+Generally, you want to fetch the latest translations whenever releasing. The
+exception is if you have recently changed lots of existing source strings 
 that haven't had a chance to be translated.
 
 To fetch the latest translations:
@@ -79,8 +79,8 @@ the Xcode project to include the new localization.
 ### Upload Strings to be Translated
 
 Make new source strings available to our translators by uploading them
-to transifex. Immediately after uploading we also need to pull down the 
-updated translations. Granted, at this point the new strings will be in 
+to Transifex. Immediately after uploading we also need to pull down the 
+updated translations. Granted, at this point, the new strings will be in 
 English until translated, but English is preferable to the string name 
 like ARCHIVE_HEADER which we'd otherwise see.
 
