@@ -180,7 +180,7 @@ public class DisplayableText: NSObject {
 
     private static let hostRegex: NSRegularExpression? = {
         let pattern = "^(?:https?:\\/\\/)?([^:\\/\\s]+)(.*)?$"
-        return try? NSRegularExpression(pattern: pattern)
+        return try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive])
     }()
 
     @objc
