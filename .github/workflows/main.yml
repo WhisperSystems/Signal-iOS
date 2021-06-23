@@ -46,7 +46,7 @@ jobs:
           ruby-version: 2.6
 
       - name: Cache Bundle Install
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
