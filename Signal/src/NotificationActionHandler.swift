@@ -55,6 +55,34 @@ class NotificationActionHandler: Dependencies {
         }
     }
 
+    func mute(userInfo: [AnyHashable: Any]) throws -> Promise<Void> {
+        return firstly {
+            self.notificationMessage(forUserInfo: userInfo)
+        }.then(on: .global()) { (notificationMessage: NotificationMessage) -> Promise<Void> in
+            let thread = notificationMessage.thread
+
+            guard let timeZone = TimeZone(identifier: "UTC") else {
+                owsFailDebug("Invalid timezone.")
+                return
+            }
+
+            var calendar = Calendar.current
+            calendar.timeZone = timeZone
+
+            let dateComponents = DateComponents()
+            dateComponents.hour = 1
+
+            guard let mutedUntilDate = calendar.date(byAdding: dateComponents, to: Date()) else {
+                owsFailDebug("Couldn't modify date.")
+                return
+            }
+
+            self.databaseStorage.write { transaction in
+                thread.updateWithMuted(until: mutedUntilDate, transaction: transaction)
+            }
+        }
+    }
+
     func reply(userInfo: [AnyHashable: Any], replyText: String) throws -> Promise<Void> {
         return firstly { () -> Promise<NotificationMessage> in
             self.notificationMessage(forUserInfo: userInfo)

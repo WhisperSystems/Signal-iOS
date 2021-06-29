@@ -42,6 +42,10 @@ public class UserNotificationConfig {
             return UNNotificationAction(identifier: action.identifier,
                                         title: MessageStrings.markAsReadNotificationAction,
                                         options: [])
+        case .mute:
+            return UNNotificationAction(identifier: action.identifier,
+                                        title: MessageStrings.muteNotificationAction,
+                                        options: [])
         case .reply:
             return UNTextInputNotificationAction(identifier: action.identifier,
                                                  title: MessageStrings.replyNotificationAction,

@@ -41,6 +41,7 @@ public enum AppNotificationAction: String, CaseIterable {
     case callBack
     case declineCall
     case markAsRead
+    case mute
     case reply
     case showThread
     case reactWithThumbsUp
@@ -93,16 +94,16 @@ extension AppNotificationCategory {
         switch self {
         case .incomingMessageWithActions_CanReply:
             if DebugFlags.reactWithThumbsUpFromLockscreen {
-                return [.markAsRead, .reply, .reactWithThumbsUp]
+                return [.markAsRead, .mute, .reply, .reactWithThumbsUp]
             } else {
-                return [.markAsRead, .reply]
+                return [.markAsRead, .mute, .reply]
             }
         case .incomingMessageWithActions_CannotReply:
-            return [.markAsRead]
+            return [.markAsRead, .mute]
         case .incomingReactionWithActions_CanReply:
-            return [.markAsRead, .reply]
+            return [.markAsRead, .mute, .reply]
         case .incomingReactionWithActions_CannotReply:
-            return [.markAsRead]
+            return [.markAsRead, .mute]
         case .incomingMessageWithoutActions,
              .incomingMessageFromNoLongerVerifiedIdentity:
             return []
@@ -135,6 +136,8 @@ extension AppNotificationAction {
             return "Signal.AppNotifications.Action.declineCall"
         case .markAsRead:
             return "Signal.AppNotifications.Action.markAsRead"
+        case .mute:
+            return "Signal.AppNotifications.AppNotifications.mute"
         case .reply:
             return "Signal.AppNotifications.Action.reply"
         case .showThread:

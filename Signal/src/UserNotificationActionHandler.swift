@@ -60,6 +60,8 @@ public class UserNotificationActionHandler: NSObject {
             return try actionHandler.declineCall(userInfo: userInfo)
         case .markAsRead:
             return try actionHandler.markAsRead(userInfo: userInfo)
+        case .mute:
+            return try actionHandler.mute(userInfo: userInfo)
         case .reply:
             guard let textInputResponse = response as? UNTextInputNotificationResponse else {
                 throw OWSAssertionError("response had unexpected type: \(response)")

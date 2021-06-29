@@ -4265,6 +4265,9 @@
 "PUSH_MANAGER_REACT_WITH_THUMBS_UP" = "👍";
 
 /* Notification action button title */
+"PUSH_MANAGER_MUTE" = "Mute";
+
+/* Notification action button title */
 "PUSH_MANAGER_REPLY" = "Reply";
 
 /* Title of alert shown when push tokens sync job succeeds. */
