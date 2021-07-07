@@ -1,20 +1,20 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 📃 User documentation
+  - name: 📃 Support Center
     url: https://support.signal.org/
-    about: Search for any questions you have about Signal
-  - name: 📖 Developer documentation
-    url: https://signal.org/docs/
-    about: Official Signal developer documentation
-  - name: 💬 Community support
-    url: https://community.signalusers.org/c/support/ios-support/
-    about: Feel free to ask anything
+    about: Find answers to many common questions.
   - name: ✨ Feature request
     url: https://community.signalusers.org/c/feature-requests/ios-feature-requests/
     about: Missing something in Signal? Let us know.
-  - name: 📚 Translation feedback
+  - name: 💬 Community support
+    url: https://community.signalusers.org/c/support/
+    about: Feel free to ask anything.
+  - name: 📖 Developer documentation
+    url: https://signal.org/docs/
+    about: Official Signal developer documentation.
+  - name: 📚 Translation feedback.
     url: https://community.signalusers.org/c/translation-feedback/
-    about: Share feedback on translations
+    about: Share feedback on translations.
   - name: ❓ Other issue?
     url: https://community.signalusers.org/
-    about: Search on the community forums
+    about: Search on the community forums.
