@@ -146,7 +146,7 @@
 "APP_LAUNCH_FAILURE_ALERT_TITLE" = "Fehler";
 
 /* Error indicating that the app could not launch because the database could not be loaded. */
-"APP_LAUNCH_FAILURE_COULD_NOT_LOAD_DATABASE" = "Datenbank konnte nicht geladen werden";
+"APP_LAUNCH_FAILURE_COULD_NOT_LOAD_DATABASE" = "Die Datenbank konnte nicht geladen werden";
 
 /* Error indicating that the app could not launch without reverting unknown database migrations. */
 "APP_LAUNCH_FAILURE_INVALID_DATABASE_VERSION_MESSAGE" = "Bitte aktualisiere Signal auf die neueste Version.";
@@ -158,7 +158,7 @@
 "APP_LAUNCH_FAILURE_RESTORE_FAILED_MESSAGE" = "Die von deinem alten Gerät übertragenen Daten konnten nicht wiederhergestellt werden. Sende bitte ein Diagnoseprotokoll an support@signal.org, damit wir das Problem beheben können. Falls du Signal erneut installierst, könnte dein Nachrichtenverlauf verloren sein.";
 
 /* Error indicating that the app could not restore transferred data. */
-"APP_LAUNCH_FAILURE_RESTORE_FAILED_TITLE" = "Übertragung konnte nicht abgeschlossen werden";
+"APP_LAUNCH_FAILURE_RESTORE_FAILED_TITLE" = "Die Übertragung konnte nicht abgeschlossen werden";
 
 /* Text prompting user to edit their profile name. */
 "APP_SETTINGS_EDIT_PROFILE_NAME_PROMPT" = "Gib deinen Namen ein";
@@ -227,13 +227,13 @@
 "ATTACHMENT_ERROR_ALERT_TITLE" = "Fehler beim Senden des Anhangs";
 
 /* Attachment error message for image attachments which could not be converted to JPEG */
-"ATTACHMENT_ERROR_COULD_NOT_CONVERT_TO_JPEG" = "Bild kann nicht konvertiert werden.";
+"ATTACHMENT_ERROR_COULD_NOT_CONVERT_TO_JPEG" = "Das Bild kann nicht konvertiert werden.";
 
 /* Attachment error message for video attachments which could not be converted to MP4 */
-"ATTACHMENT_ERROR_COULD_NOT_CONVERT_TO_MP4" = "Video kann nicht verarbeitet werden.";
+"ATTACHMENT_ERROR_COULD_NOT_CONVERT_TO_MP4" = "Das Video kann nicht verarbeitet werden.";
 
 /* Attachment error message for image attachments which cannot be parsed */
-"ATTACHMENT_ERROR_COULD_NOT_PARSE_IMAGE" = "Bild kann nicht geparst werden.";
+"ATTACHMENT_ERROR_COULD_NOT_PARSE_IMAGE" = "Das Bild kann nicht geparst werden.";
 
 /* Attachment error message for image attachments in which metadata could not be removed */
 "ATTACHMENT_ERROR_COULD_NOT_REMOVE_METADATA" = "Metadaten können nicht aus dem Bild entfernt werden.";
@@ -242,7 +242,7 @@
 "ATTACHMENT_ERROR_COULD_NOT_RESIZE_IMAGE" = "Bildgröße kann nicht geändert werden.";
 
 /* Attachment error message for attachments whose data exceed file size limits */
-"ATTACHMENT_ERROR_FILE_SIZE_TOO_LARGE" = "Anhang ist zu groß.";
+"ATTACHMENT_ERROR_FILE_SIZE_TOO_LARGE" = "Der Anhang ist zu groß.";
 
 /* Attachment error message for attachments with invalid data */
 "ATTACHMENT_ERROR_INVALID_DATA" = "Anhang besitzt ungültigen Inhalt.";
@@ -251,10 +251,10 @@
 "ATTACHMENT_ERROR_INVALID_FILE_FORMAT" = "Anhang besitzt ein ungültiges Dateiformat.";
 
 /* Attachment error message for attachments without any data */
-"ATTACHMENT_ERROR_MISSING_DATA" = "Anhang ist leer.";
+"ATTACHMENT_ERROR_MISSING_DATA" = "Der Anhang ist leer.";
 
 /* Accessibility hint describing what you can do with the attachment button */
-"ATTACHMENT_HINT" = "Zu sendende Medieninhalte auswählen";
+"ATTACHMENT_HINT" = "Medieninhalte zum versenden auswählen";
 
 /* A button to open the camera from the Attachment Keyboard */
 "ATTACHMENT_KEYBOARD_CAMERA" = "Kamera";
@@ -272,7 +272,7 @@
 "ATTACHMENT_KEYBOARD_LOCATION" = "Standort";
 
 /* A string indicating to the user that they'll be able to send photos from this view once they enable photo access. */
-"ATTACHMENT_KEYBOARD_NO_PHOTO_ACCESS" = "Erlaube in den Einstellungen Zugriff auf deine Fotos, um sie hier versenden zu können.";
+"ATTACHMENT_KEYBOARD_NO_PHOTO_ACCESS" = "Erlaube in den Einstellungen den Zugriff auf deine Fotos, um sie hier versenden zu können.";
 
 /* A string indicating to the user that once they take photos, they'll be able to send them from this view. */
 "ATTACHMENT_KEYBOARD_NO_PHOTOS" = "Sobald du Fotos aufgenommen hast, kannst du sie hier versenden.";
@@ -398,7 +398,7 @@
 "BLOCK_USER_BEHAVIOR_EXPLANATION" = "Blockierte Nutzer werden dich nicht anrufen oder dir Nachrichten senden können.";
 
 /* Tooltip highlighting the blur image editing tool. */
-"BLUR_TOOLTIP" = "Neu: Verwische Gesichter oder zeichne zum Verwischen in beliebige Bereiche.";
+"BLUR_TOOLTIP" = "Neu: Verwische Gesichter oder zeichne zum Verwischen über beliebige Bereiche.";
 
 /* Label for the 'add' button. */
 "BUTTON_ADD" = "Hinzufügen";
@@ -4802,10 +4802,10 @@
 "SEND_FAILED_NOTIFICATION_BODY" = "Deine Nachricht konnte nicht versendet werden.";
 
 /* Alert body after invite failed */
-"SEND_INVITE_FAILURE" = "Einladung konnte nicht versendet werden. Bitte versuche es später erneut.";
+"SEND_INVITE_FAILURE" = "Deine Einladung konnte nicht versendet werden. Bitte versuche es später erneut.";
 
 /* Alert body after invite succeeded */
-"SEND_INVITE_SUCCESS" = "Du hast deinen Freund eingeladen, Signal zu verwenden!";
+"SEND_INVITE_SUCCESS" = "Du hast einen deiner Freunde eingeladen, Signal zu verwenden!";
 
 /* alert action, confirming the user wants to exit the media flow and abandon any photos they've taken */
 "SEND_MEDIA_CONFIRM_ABANDON_ALBUM" = "Medieninhalte verwerfen";
@@ -6134,7 +6134,7 @@
 "WALLPAPER_SETTINGS_CLEAR_WALLPAPER_CHAT_CONFIRMATION" = "Hintergrund für diese Unterhaltung entfernen?";
 
 /* Dim wallpaper action in wallpaper settings view. */
-"WALLPAPER_SETTINGS_DIM_WALLPAPER" = "Dunkles Design dunkelt Hintergrund ab";
+"WALLPAPER_SETTINGS_DIM_WALLPAPER" = "Dunkles Design dunkelt deinen Hintergrund ab";
 
 /* An error indicating to the user that we failed to clear the wallpaper. */
 "WALLPAPER_SETTINGS_FAILED_TO_CLEAR" = "Der Hintergrund konnte nicht entfernt werden. Bitte versuche es erneut oder kontaktiere den Support, falls das Problem fortbesteht.";
