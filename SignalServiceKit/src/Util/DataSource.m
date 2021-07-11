@@ -493,12 +493,16 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wblock-capture-autoreleasing"
                                self.isConsumed = YES;
-                               if ([[NSFileManager defaultManager] isWritableFileAtPath:self.fileUrl.path]) {
+                               // We generally prefer moving the file when the file is writable (thus removable) because
+                               // it is faster. But we should not move a file when the file is not in our container.
+                               // So we check if the file's path is under our temporary directory instead of checking
+                               // if the file is writable to decide whether we are going to move the file or copy the file.
+                               if ([self.fileUrl.path hasPrefix:OWSTemporaryDirectory()]) {
                                    success = [NSFileManager.defaultManager moveItemAtURL:self.fileUrl
                                                                                    toURL:dstUrl
                                                                                    error:error];
                                } else {
-                                   OWSLogError(@"File was not writeable. Copying instead of moving.");
+                                   OWSLogInfo(@"File was not in our temporary directory or not writeable. Copying instead of moving.");
                                    success = [NSFileManager.defaultManager copyItemAtURL:self.fileUrl
                                                                                    toURL:dstUrl
                                                                                    error:error];
