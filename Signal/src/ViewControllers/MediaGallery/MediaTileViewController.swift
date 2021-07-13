@@ -647,7 +647,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDe
             return
         }
 
-        guard mediaGallery.galleryItemCount > 0  else {
+        guard galleryDates.count > 0 else {
             // Show Empty
             self.collectionView?.reloadData()
             return
