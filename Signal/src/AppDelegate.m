@@ -731,28 +731,38 @@ void uncaughtExceptionHandler(NSException *exception)
     }
 
     AppReadinessRunNowOrWhenAppDidBecomeReadySync(^{
-        if (![self.tsAccountManager isRegisteredAndReady]) {
-            ActionSheetController *controller = [[ActionSheetController alloc]
-                initWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
-                      message:NSLocalizedString(@"REGISTRATION_RESTRICTED_MESSAGE", nil)];
+        // We need a root view controller set up before we run the block that presents a view controller.
+        // In most cases of launching the app, `ensureRootViewController` is called in `checkIfAppIsReady`
+        // or in some other ways.
+        // But in the case of the home screen quick action when the app is not running, in which case is
+        // handled here, it doesn't have a chance to call `ensureRootViewController` because this block is
+        // executed before `ensureRootViewController` in `setAppIsReady`.
+        // The workaround is to place the execution of the block after the call to `checkIfAppIsReady`,
+        // so the root view controller is set by then.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![self.tsAccountManager isRegisteredAndReady]) {
+                ActionSheetController *controller = [[ActionSheetController alloc]
+                    initWithTitle:NSLocalizedString(@"REGISTER_CONTACTS_WELCOME", nil)
+                          message:NSLocalizedString(@"REGISTRATION_RESTRICTED_MESSAGE", nil)];
 
-            [controller addAction:[[ActionSheetAction alloc] initWithTitle:CommonStrings.okButton
-                                                                     style:ActionSheetActionStyleDefault
-                                                                   handler:^(ActionSheetAction *_Nonnull action) {
+                [controller addAction:[[ActionSheetAction alloc] initWithTitle:CommonStrings.okButton
+                                                                         style:ActionSheetActionStyleDefault
+                                                                       handler:^(ActionSheetAction *_Nonnull action) {
 
-                                                                   }]];
-            UIViewController *fromViewController = [[UIApplication sharedApplication] frontmostViewController];
-            [fromViewController presentViewController:controller
-                                             animated:YES
-                                           completion:^{
-                                               completionHandler(NO);
-                                           }];
-            return;
-        }
+                                                                       }]];
+                UIViewController *fromViewController = [[UIApplication sharedApplication] frontmostViewController];
+                [fromViewController presentViewController:controller
+                                                 animated:YES
+                                               completion:^{
+                                                   completionHandler(NO);
+                                               }];
+                return;
+            }
 
-        [SignalApp.shared showNewConversationView];
+            [SignalApp.shared showNewConversationView];
 
-        completionHandler(YES);
+            completionHandler(YES);
+        });
     });
 }
 
