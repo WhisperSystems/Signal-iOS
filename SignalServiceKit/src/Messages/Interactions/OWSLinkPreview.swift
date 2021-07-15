@@ -635,7 +635,7 @@ public class OWSLinkPreviewManager: NSObject, Dependencies {
 
 fileprivate extension URL {
     private static let schemeAllowSet: Set = ["https"]
-    private static let tldRejectSet: Set = ["onion"]
+    private static let tldRejectSet: Set = ["onion", "i2p"]
     private static let urlDelimeters: Set<Character> = Set(":/?#[]@")
 
     var mimeType: String? {
