@@ -66,6 +66,7 @@
                 $attachment,
                 ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.data"
                 || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.pkpass"
                 ).@count &gt;= 1
                 ).@count == 1
             </string>

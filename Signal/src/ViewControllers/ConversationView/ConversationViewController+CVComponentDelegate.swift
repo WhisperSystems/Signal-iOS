@@ -5,6 +5,7 @@
 import Foundation
 import QuickLook
 import PromiseKit
+import PassKit
 
 extension ConversationViewController: CVComponentDelegate {
 
@@ -237,6 +238,11 @@ extension ConversationViewController: CVComponentDelegate {
             let previewController = QLPreviewController()
             previewController.dataSource = attachment
             self.present(previewController, animated: true, completion: nil)
+            return .handledByDelegate
+        } else if PKAddPassesViewController.canAddPasses(),
+                  let pkPass = attachment.representedPKPass(),
+                  let addPassesVC = PKAddPassesViewController(pass: pkPass) {
+            self.present(addPassesVC, animated: true, completion: nil)
             return .handledByDelegate
         } else {
             return .default

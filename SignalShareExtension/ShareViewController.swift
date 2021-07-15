@@ -648,6 +648,10 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
                     return UnloadedItem(itemProvider: itemProvider, itemType: .pdf)
                 }
 
+                if itemProvider.hasItemConformingToTypeIdentifier("com.apple.pkpass") {
+                    return UnloadedItem(itemProvider: itemProvider, itemType: .pkPass)
+                }
+
                 owsFailDebug("unexpected share item: \(itemProvider)")
                 return UnloadedItem(itemProvider: itemProvider, itemType: .other)
             }
@@ -683,6 +687,7 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
             case contact(_ contactData: Data)
             case text(_ text: String)
             case pdf(_ data: Data)
+            case pkPass(_ data: Data)
 
             var debugDescription: String {
                 switch self {
@@ -698,6 +703,8 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
                     return "text"
                 case .pdf:
                     return "pdf"
+                case .pkPass:
+                    return "pkPass"
                 @unknown default:
                     owsFailDebug("Unknown value.")
                     return "unknown"
@@ -735,6 +742,7 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
             case contact
             case text
             case pdf
+            case pkPass
             case other
         }
 
@@ -819,6 +827,11 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
             return itemProvider.loadData(forTypeIdentifier: kUTTypePDF as String, options: nil).map { data in
                 LoadedItem(itemProvider: unloadedItem.itemProvider,
                            payload: .pdf(data))
+            }
+        case .pkPass:
+            return itemProvider.loadData(forTypeIdentifier: "com.apple.pkpass", options: nil).map { data in
+                LoadedItem(itemProvider: unloadedItem.itemProvider,
+                           payload: .pkPass(data))
             }
         case .other:
             return itemProvider.loadUrl(forTypeIdentifier: kUTTypeFileURL as String, options: nil).map { fileUrl in
@@ -908,6 +921,10 @@ public class ShareViewController: UIViewController, ShareViewDelegate, SAEFailed
         case .pdf(let pdf):
             let dataSource = DataSourceValue.dataSource(with: pdf, fileExtension: "pdf")
             let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: kUTTypePDF as String)
+            return Promise.value(attachment)
+        case .pkPass(let pkPass):
+            let dataSource = DataSourceValue.dataSource(with: pkPass, fileExtension: "pkpass")
+            let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: "com.apple.pkpass")
             return Promise.value(attachment)
         }
     }
